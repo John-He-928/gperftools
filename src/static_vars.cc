@@ -109,7 +109,7 @@ void Static::InitStaticVars() {
 }
 
 
-#if defined(HAVE_FORK) && defined(HAVE_PTHREAD)
+#if defined(HAVE_FORK) && defined(HAVE_PTHREAD) && !defined(__ANDROID__)
 
 static inline
 void SetupAtForkLocksHandler()

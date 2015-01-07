@@ -156,7 +156,12 @@ extern "C" {
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#if defined(__ANDROID__)
+#include <sys/syscall.h>
+#include <sys/linux-syscalls.h>
+#else
 #include <syscall.h>
+#endif
 #include <unistd.h>
 #include <linux/unistd.h>
 #include <endian.h>
@@ -197,6 +202,25 @@ extern "C" {
  *   them, because glibc defines a global macro by the same name.
  */
 
+/* Android missing definations. */
+#if defined(__ANDROID__)
+typedef unsigned long ulong;
+typedef int64_t __off64_t;
+
+#ifndef SYS_mmap
+#define SYS_mmap	__NR_mmap
+#endif
+#ifndef SYS_mmap2
+#define SYS_mmap2	__NR_mmap2
+#endif
+#ifndef SYS_munmap
+#define SYS_munmap	__NR_munmap
+#endif
+#ifndef SYS_mremap
+#define SYS_mremap	__NR_mremap
+#endif
+#endif
+ 
 /* include/linux/dirent.h                                                    */
 struct kernel_dirent64 {
   unsigned long long d_ino;

@@ -58,6 +58,14 @@
 #define WRITE_TO_STDERR(buf, len) WriteToStderr(buf, len);  // in port.cc
 #elif defined(HAVE_SYS_SYSCALL_H)
 #include <sys/syscall.h>
+
+#if defined(__ANDROID__)
+#include <sys/linux-syscalls.h>
+#ifndef SYS_write
+#define SYS_write	__NR_write
+#endif
+#endif
+
 #define WRITE_TO_STDERR(buf, len) syscall(SYS_write, STDERR_FILENO, buf, len)
 #else
 #define WRITE_TO_STDERR(buf, len) write(STDERR_FILENO, buf, len)

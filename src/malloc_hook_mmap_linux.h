@@ -41,7 +41,12 @@
 #endif
 
 #include <unistd.h>
+#if defined(__ANDROID__)
+#include <sys/syscall.h>
+#include <sys/linux-syscalls.h>
+#else
 #include <syscall.h>
+#endif
 #include <sys/mman.h>
 #include <errno.h>
 #include "base/linux_syscall_support.h"
@@ -148,8 +153,11 @@ extern "C" {
   void* mremap(void* old_addr, size_t old_size, size_t new_size,
                int flags, ...) __THROW
     ATTRIBUTE_SECTION(malloc_hook);
+	
+#if !defined(__ANDROID__)
   void* sbrk(ptrdiff_t increment) __THROW
     ATTRIBUTE_SECTION(malloc_hook);
+#endif
 }
 
 extern "C" void* mmap64(void *start, size_t length, int prot, int flags,
@@ -202,7 +210,7 @@ extern "C" void* mremap(void* old_addr, size_t old_size, size_t new_size,
   return result;
 }
 
-#ifndef __UCLIBC__
+#if !defined(__UCLIBC__) && !defined(__ANDROID__)
 // libc's version:
 extern "C" void* __sbrk(ptrdiff_t increment);
 

@@ -516,7 +516,7 @@ int NumCPUs(void) {
 //      true.
 // ----------------------------------------------------------------------
 bool HasPosixThreads() {
-#if defined(__linux__)
+#if defined(__linux__) && !defined(__ANDROID__)
 #ifndef _CS_GNU_LIBPTHREAD_VERSION
 #define _CS_GNU_LIBPTHREAD_VERSION 3
 #endif

@@ -145,6 +145,10 @@ int perftools_pthread_once(pthread_once_t *ctl,
     return 0;
   }
 #endif
+
+#if defined(__ANDROID__)
+  return pthread_once(ctl, init_routine);
+#else
   if (pthread_once) {
     return pthread_once(ctl, init_routine);
   } else {
@@ -154,4 +158,5 @@ int perftools_pthread_once(pthread_once_t *ctl,
     }
     return 0;
   }
+#endif
 }

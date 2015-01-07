@@ -80,7 +80,7 @@
 #ifdef HAVE_EXECINFO_H
 #include <execinfo.h>           // backtrace
 #endif
-#ifdef HAVE_GRP_H
+#if defined(HAVE_GRP_H) && !defined(__ANDROID__)
 #include <grp.h>                // getgrent, getgrnam
 #endif
 #ifdef HAVE_PWD_H
@@ -846,7 +846,7 @@ static void TestLibCAllocate() {
   void *stack[1];
   backtrace(stack, 1);
 #endif
-#ifdef HAVE_GRP_H
+#if defined(HAVE_GRP_H) && !defined(__ANDROID__)
   gid_t gid = getgid();
   getgrgid(gid);
   if (grp == NULL)  grp = getgrent();  // a race condition here is okay
